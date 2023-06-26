@@ -1,0 +1,9 @@
+*.o
+*/*.o
+*/*/*.o
+raylib.cache
+raylib
+smartcalc.exe
+smartcalc
+sane_rm/target
+*.DS_Store
