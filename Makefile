@@ -24,46 +24,45 @@ ifeq ($(OS),Windows_NT)
 	CC+=-D WIN32 -mwindows
 	LIBS+=-lgdi32 -lwinmm
 
-    ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
-        RAYLIB_VERSION=win64_mingw-w64
+	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
+		RAYLIB_VERSION=win64_mingw-w64
 		CC+=-D AMD64
-    else
-        ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
-        	RAYLIB_VERSION=win64_mingw-w64
+	else
+		ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+			RAYLIB_VERSION=win64_mingw-w64
 			CC+=-D AMD64
-        endif
-        ifeq ($(PROCESSOR_ARCHITECTURE),x86)
-        	RAYLIB_VERSION=win32_mingw-w64
+		endif
+		ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+			RAYLIB_VERSION=win32_mingw-w64
 			RMRF=sane_rm32.exe 
 			CC+=-D IA32
-        endif
-    endif
+		endif
+	endif
 else
-# 	TODO: Libraries for linux
-	LIBS+=
+	LIBS+=-lsubunit -lrt -lm -lpthread
 	RMRF=rm -rf
-    UNAME_S := $(shell uname -s)
-    UNAME_P := $(shell uname -p)
-    ifeq ($(UNAME_S),Linux)
-        CC += -D LINUX
+	UNAME_S := $(shell uname -s)
+	UNAME_P := $(shell uname -p)
+	ifeq ($(UNAME_S),Linux)
+		CC += -D LINUX
 
 		ifeq ($(UNAME_P),x86_64)
-        	RAYLIB_VERSION=linux_amd64
+			RAYLIB_VERSION=linux_amd64
 		else ifneq ($(filter %86,$(UNAME_P)),)
-        	RAYLIB_VERSION=linux_i386
+			RAYLIB_VERSION=linux_i386
 		else ifneq ($(filter arm%,$(UNAME_P)),)
 			WARNS+=WARNING: We do not have raylib build for Linux ARM architecture. Going from there with AMD64 build, idk.
-        	RAYLIB_VERSION=linux_amd64
+			RAYLIB_VERSION=linux_amd64
 		else
 			WARNS+=WARNING: Failed to determite processor architecture. We will assume linux_amd64.
-        	RAYLIB_VERSION=linux_amd64
+			RAYLIB_VERSION=linux_amd64
 		endif
-    endif
-    ifeq ($(UNAME_S),Darwin)
-        CC += -D OSX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		CC += -D OSX
 		LIBS+=-lobjc -framework Cocoa -framework IOKit
-        RAYLIB_VERSION=macos
-    endif
+		RAYLIB_VERSION=macos
+	endif
 
 	ifeq ($(UNAME_P),x86_64)
 		CC+=-D AMD64
