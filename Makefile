@@ -49,12 +49,13 @@ else
 
 		ifeq ($(UNAME_P),x86_64)
         	RAYLIB_VERSION=linux_amd64
-		endif
-		ifneq ($(filter %86,$(UNAME_P)),)
+		else ifneq ($(filter %86,$(UNAME_P)),)
         	RAYLIB_VERSION=linux_i386
-		endif
-		ifneq ($(filter arm%,$(UNAME_P)),)
+		else ifneq ($(filter arm%,$(UNAME_P)),
 			WARNS+=WARNING: We do not have raylib build for Linux ARM architecture. Going from there with AMD64 build, idk.
+        	RAYLIB_VERSION=linux_amd64
+		else
+			WARNS+=WARNING: Failed to determite processor architecture. We will assume linux_amd64.
         	RAYLIB_VERSION=linux_amd64
 		endif
     endif
