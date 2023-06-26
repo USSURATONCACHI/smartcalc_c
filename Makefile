@@ -39,7 +39,7 @@ ifeq ($(OS),Windows_NT)
 		endif
 	endif
 else
-	LIBS+=-lsubunit -lrt -lm -lpthread
+	LIBS+= -lrt -lm -lpthread
 	RMRF=rm -rf
 	UNAME_S := $(shell uname -s)
 	UNAME_P := $(shell uname -p)
